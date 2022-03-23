@@ -10,7 +10,7 @@
 
 #define _QUEUE_IMPL_
 #include "QueueADT.h"
-
+#include <assert.h>
 
 static struct stackStruct {
     void **contents;
@@ -35,12 +35,25 @@ QueueADT que_create(int (*cmp)(const void *a, const void *b)) {
     return queue;
 }
 
+/// que_destroy completely frees any memory associated with the 
+/// given queue
 void que_destroy(QueueADT queue) {
-
+    assert(queue != 0);
+    if(!que_empty) {
+        free(queue->contents);
+    }
+    free(queue);
 }
 
+/// que_clear removes all contents from queue and resets values
 void que_clear(QueueADT queue) {
-
+    assert(queue != 0);
+    if(!que_empty) {
+        free(queue->contents);
+        queue->contents = 0;
+    }
+    queue->capacity = 0;
+    queue->num = 0;
 }
 
 void que_insert(QueueADT queue, void *data) {
@@ -51,6 +64,7 @@ void* que_remove(QueueADT queue) {
 
 }
 
+/// que_empty tells whether given queue has any contents
 bool que_empty(QueueADT queue) {
-
+    return (queue->contents == 0);
 }
