@@ -58,6 +58,7 @@ int que_findInsert(QueueADT queue, void *data) {
 QueueADT que_create(int (*cmp)(const void *a, const void *b)) {
     QueueADT queue;
     queue = (QueueADT) malloc(sizeof(struct stackStruct));
+
     if(queue != 0) {
         queue->contents = 0;
         queue->capacity = 0;
@@ -92,6 +93,7 @@ void que_clear(QueueADT queue) {
 /// cmp function found in queue
 void que_insert(QueueADT queue, void *data) {
     assert(queue != 0);
+
     //initialize queue contents if empty
     if(queue->contents == 0) {
         queue->contents = malloc(sizeof(void*) * ALLOC_UNIT);
@@ -112,6 +114,7 @@ void que_insert(QueueADT queue, void *data) {
         queue->contents[queue->len] = data;
         queue->len +=1;
     }
+    //else will add data based on cmp function in queue
     else {
         int pointer = que_findInsert(queue, data);
         for(int i = queue->len; i > pointer; i--) {
@@ -127,9 +130,12 @@ void* que_remove(QueueADT queue) {
     void *data;
     assert(!que_empty(queue));
     data = queue->contents[0];
+
+    //move all data forward/to the left
     for(size_t i = 0; i < (queue->len-1); i++) {
         queue->contents[i] = queue ->contents[i+1];
     }
+
     queue->len -= 1;
     return data;
 }
