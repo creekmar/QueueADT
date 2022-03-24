@@ -10,6 +10,6 @@ for f in 1 2 3 4
 do
 	echo Running test $f
 	./queue_test$f      > out.$f
-	echo diff qtest$f.out out.$f
-	diff qtest$f.out out.$f
+	echo diff stdout.$f out.$f
+	diff stdout.$f out.$f
 done
